@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>EzCalc</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+<form id="Form" name="calcform">
+
+<table border cellpadding = 1 width=350 bgcolor="white">
+    <tr>
+      <td>1st Arg:</td>
+      <td>
+          <center>
+          <input id="firstNum" type="number" min="0" max="100" step="1" value="0" autofocus>
+          </center>
+      </td>
+    </tr>
+    <tr>
+      <td>2nd Arg:</td>
+      <td>
+        <center>
+            <input id="secondNum" type="number" min="0" max="100" step="1" value="0">
+        </center>
+      </td>
+    </tr>
+</table>
+<table border cellpadding = 1 width=350>
+    <select id="operation" name="operation">
+                    <option>+</option>
+                    <option>-</option>
+                    <option>*</option>
+                    <option>/</option>
+    </select>
+</table>
+
+</form>
+<input type="submit" value="Посчитать" id="somebutton" onclick="callServlet('GET'); return false" >
+<br>
+<br>
+<div id="resDiv"></div>        
+        
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script> 
+            function callServlet(methodType) {
+                var bool = true;
+                //var patt = /\-?\d+(\.\d{0,})?/;
+                document.getElementById("firstNum").style.borderColor = "green";
+                document.getElementById("secondNum").style.borderColor = "green";
+                if(document.getElementById("firstNum").value==''){
+                     bool = false;                     
+                     document.getElementById("firstNum").style.borderColor = "red";
+                     alert("Заполните поле!");                     
+                }
+                if(document.getElementById("secondNum").value==''){
+                     bool = false;                     
+                     document.getElementById("secondNum").style.borderColor = "red";
+                     alert("Заполните поле!");
+                }
+                if(bool) {
+                    document.getElementById("Form").action = "testServlet";
+                    document.getElementById("Form").method = methodType;
+                    document.getElementById("Form").innerHTML;                                   
+                    $.ajax({
+                        url: 'testServlet',
+                        data:
+                                {
+                                    val1:document.getElementById("firstNum").value,
+                                    val2:document.getElementById("secondNum").value, 
+                                    operation:document.getElementById("operation").value
+                                },
+                        success: function(result){
+                             document.getElementById("resDiv").innerText = result;
+                        }
+                    }); 
+                }
+            }             
+        </script>
+    </body>
+</html>
