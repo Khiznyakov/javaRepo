@@ -9,13 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
-@Entity
+@Entity//говорит о том, что объект будет обрабатываться хибернейтом
 public class Report implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long _id;
+    private Long id;
     @Column(name="login")
     private String login;    
     @Column(name="number1")
@@ -30,11 +30,11 @@ public class Report implements Serializable {
     private Date datetime;  
     
     public Long getId() {
-        return _id;
+        return id;
     }
 
     public void setId(Long id) {
-        this._id = id;
+        this.id = id;
     }
 
     public String getUsername() {
@@ -83,29 +83,5 @@ public class Report implements Serializable {
 
     public void setDateTime(Date datetime) {
         this.datetime = datetime;
-    }
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (_id != null ? _id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {   
-        if (!(object instanceof Report)) {
-            return false;
-        }
-        Report other = (Report) object;
-        if ((this._id == null && other._id != null) || (this._id != null && !this._id.equals(other._id))) {
-            return false;
-        }
-        return true;
-    }
-    @Override
-    public String toString() {
-        return "Entity.Log[ id=" + _id + " ]";
-    }
-    
+    }  
 }

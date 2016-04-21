@@ -7,7 +7,7 @@
     </head>
     <body>
         <h1>Report users</h1>
-         <input type="submit" value="Show!" onclick="showT()"> 
+         <input type="submit" id ="show" value="Show!"> 
          
          </br>
             <a href="/examples/admin">Go back!</a>
@@ -15,7 +15,7 @@
     </body>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script>
-            var r;
+            /*var r;
             function showT() {
                     var result;            
                     $.ajax({
@@ -31,6 +31,24 @@
                             }                            
                         }
                     });
-            }         
+            }  */
+     $("#show").click(function () {
+            $.ajax({
+                        url: 'showT',
+                        type: 'POST',                       
+                        success: Func
+                        
+                    });
+            });
+            function Func(list) {
+            var result;
+            result =  JSON.parse(list);
+                            for(var p in result) {                         
+                                var h = document.createElement("H2");
+                                var t = document.createTextNode("id="+result[p].id+", login="+result[p].login +" "+ result[p].number1+ " "+result[p].operation+" "+ result[p].number2+" = " + result[p].result+" "+ result[p].datetime);
+                                h.appendChild(t);
+                                document.body.appendChild(h);
+                            } 
+                        }
         </script>
 </html>

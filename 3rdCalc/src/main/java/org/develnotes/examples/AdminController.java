@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class AdminController {	
-	@RequestMapping(value = "/admin", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin", method = RequestMethod.GET)//реквест мапинг задает адреса методам контроллера
 	public String home() {
 		return "private/admin";
 	}        
         @RequestMapping(value = "/calc", method = RequestMethod.POST)
-    public @ResponseBody String Calculator(Double number1, Double number2, int operation,String error ) 
-            throws JsonProcessingException {
-        EntityManagerFactory entityManagerFactory;
-        UserDetails user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        public @ResponseBody String Calculator(Double number1, Double number2, int operation,String error ) //результат работы метода в контроллере был выведен непосредственно в тело ответа на запрос
+        throws JsonProcessingException {
+        EntityManagerFactory entityManagerFactory;//бин для загрузки диспетчера сущностей, интерфейс в общем
+        UserDetails user = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();//Содержит информацию ядра пользователя, дальше идут флаги
         entityManagerFactory = Persistence.createEntityManagerFactory("org.develnotes_examples_war_1.0.0-BUILD-SNAPSHOTPU");
         String username = user.getUsername();      
         Model model = new Model();
@@ -72,17 +72,19 @@ public class AdminController {
 	public String calc() {            
 		return "private/calc";
 	} 
+
         
- @RequestMapping(value = "/showT", method = RequestMethod.GET)
-	public String showT() {
+ @RequestMapping(value = "/showT", method = RequestMethod.POST)
+	public @ResponseBody String showT()
+         throws JsonProcessingException {
             EntityManagerFactory entityManagerFactory;
             entityManagerFactory = Persistence.createEntityManagerFactory("org.develnotes_examples_war_1.0.0-BUILD-SNAPSHOTPU");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        List<Report> resultList = entityManager.createQuery("SELECT c FROM Report c").getResultList();
-        entityManager.close();   
-        entityManagerFactory.close();
-        String json;        
-            json = new Gson().toJson(resultList);
-		return json;
-	}            
+            EntityManager entityManager = entityManagerFactory.createEntityManager();
+            List<Report> resultList = entityManager.createQuery("SELECT c FROM Report c").getResultList();
+            entityManager.close();   
+            entityManagerFactory.close();
+            String json;        
+                json = new Gson().toJson(resultList);
+                    return json;
+            }            
 }
